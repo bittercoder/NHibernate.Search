@@ -9,6 +9,7 @@ using NHibernate.Search.Engine;
 using NHibernate.Search.Impl;
 using NHibernate.Search.Store;
 using NHibernate.Search.Store.Optimization;
+using Version = Lucene.Net.Util.Version;
 
 namespace NHibernate.Search.Backend
 {
@@ -165,8 +166,8 @@ namespace NHibernate.Search.Backend
             {
                 Analyzer analyzer = entity != null
                                         ? searchFactoryImplementor.DocumentBuilders[entity].Analyzer
-                                        : new StandardAnalyzer();
-                IndexWriter writer = new IndexWriter(provider.Directory, analyzer, false);
+																				: new StandardAnalyzer(LuceneVersion.Default);
+								IndexWriter writer = new IndexWriter(provider.Directory, analyzer, false, IndexWriter.MaxFieldLength.UNLIMITED);
 
                 LuceneIndexingParameters indexingParams = searchFactoryImplementor.GetIndexingParameters(provider);
                 if (IsBatch)

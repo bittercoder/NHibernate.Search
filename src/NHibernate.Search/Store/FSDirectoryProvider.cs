@@ -7,6 +7,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Store;
 using NHibernate.Search.Engine;
 using Directory=Lucene.Net.Store.Directory;
+using Version = Lucene.Net.Util.Version;
 
 namespace NHibernate.Search.Store
 {
@@ -28,10 +29,10 @@ namespace NHibernate.Search.Store
             {
                 bool create = !IndexReader.IndexExists(indexDir.FullName);
                 indexName = indexDir.FullName;
-                directory = FSDirectory.GetDirectory(indexName, create);
+                directory = FSDirectory.GetDirectory(indexName);
                 if (create)
                 {
-                    IndexWriter iw = new IndexWriter(directory, new StandardAnalyzer(), create);
+                    IndexWriter iw = new IndexWriter(directory, new StandardAnalyzer(LuceneVersion.Default), create, IndexWriter.MaxFieldLength.UNLIMITED);
                     iw.Close();
                 }
                 //searchFactory.RegisterDirectoryProviderForLocks(this);
